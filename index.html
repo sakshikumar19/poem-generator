@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Poem Generator</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js"></script>
+
+  <!-- Redirect to server if opened directly -->
+  <script>
+    if (window.location.protocol === 'file:') {
+      window.location.replace('http://localhost:3000');
+    }
+  </script>
+</head>
+<body>
+  <h1></h1>
+  <form action="/generate-poem" method="get">
+    <label for="topic">Enter few words :</label>
+    <input type="text" id="topic" name="topic" required>
+    <button type="submit">Generate Poem</button>
+  </form>
+  <div id="poem-output"></div>
+  <script>
+    // Handle form submission and display the poem
+    document.querySelector('form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const topic = document.getElementById('topic').value;
+      const response = await fetch(`/generate-poem?topic=${encodeURIComponent(topic)}`);
+      const poem = await response.text();
+
+      // Use <pre> tag for preserving formatting
+      document.getElementById('poem-output').innerHTML = poem.replace(/\n/g, '<br>');
+    });
+  </script>
+</body>
+</html>
+
